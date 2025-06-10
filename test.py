@@ -1,3 +1,4 @@
+
 import streamlit as st
 
 # Initialize session state
@@ -10,25 +11,13 @@ if st.user and st.user.is_logged_in:
 
 if not st.session_state.logged_in:
     st.title("Sistema de Registro/Login")
-    tab1, tab2 = st.tabs(["Registro", "Inicio de Sesión"])
-
-    with tab1:
-        st.header("Registrar Nueva Cuenta")
-        st.write("Haz clic para registrarte con Auth0.")
-        if st.button("Registrarme"):
-            st.login("auth0")
-            if st.user and st.user.is_logged_in:
-                st.session_state.logged_in = True
-                st.rerun()
-
-    with tab2:
-        st.header("Iniciar Sesión")
-        st.write("Haz clic para iniciar sesión con Auth0.")
-        if st.button("Ingresar"):
-            st.login("auth0")
-            if st.user and st.user.is_logged_in:
-                st.session_state.logged_in = True
-                st.rerun()
+    st.header("Iniciar Sesión o Registrarse")
+    st.write("Haz clic para acceder o crear una cuenta con Auth0.")
+    if st.button("Iniciar Sesión / Registrarse"):
+        st.login("auth0")
+        if st.user and st.user.is_logged_in:
+            st.session_state.logged_in = True
+            st.rerun()
 
 else:
     st.title("Aplicación Principal")
