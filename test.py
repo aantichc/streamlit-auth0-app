@@ -25,7 +25,7 @@ if not st.session_state.logged_in:
 
 else:
     st.title("Aplicación Principal")
-    st.write("Hello World! 🎉")
+    st.write("Hola Sergi Novo! Aquí va tu app 🎉")
     st.write(f"¡Bienvenido, {st.user.name}! Has iniciado sesión correctamente.")
     st.write(f"Correo: {st.user.email}")
     if st.button("Cerrar Sesión"):
