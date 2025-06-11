@@ -164,9 +164,7 @@ st.markdown(
 
 # Login page
 if not st.session_state.logged_in:
-    st.title("Sistema de Login")
-    st.header("Iniciar Sesión o Registrarse")
-    st.write("Accede o crea una cuenta con Auth0.")
+    st.title("Vitrification Viability via Osmotic Response Calculator")
     if st.button("Log in / Sign up"):
         st.login("auth0")
         if st.user and st.user.is_logged_in:
@@ -322,7 +320,7 @@ else:
         render_slider()
         mostrar_logo()
         st.session_state.button_clicked = None
-    elif st.session_state.button_clicked == "play_5":
+    elif st.session_state.button_clicked == "play_5x":
         st.session_state.playing = True
         st.session_state.speed = 5
         st.session_state.button_clicked = None
@@ -334,25 +332,25 @@ else:
                 st.session_state.playing = False
                 break
             time.sleep(0.3)
-            st.session_state.second += st.session_state.speed
+            st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
             mostrar_contenido()
             render_slider()
             mostrar_logo()
 
     # Logout button
-    st.markdown("<div style='display: flex; justify-content: center'>", unsafe_allow_html=True)
+    st.markdown("<div style='display: flex; justify-content: center;'>", unsafe_allow_html=True)
     if st.button("Log out"):
         st.logout()
         st.session_state.logged_in = False
         logout_url = (
-            "https://dev-47xxwx.app.auth0.com/v2/logout?"
-            "client_id=mTQf6FD1d47xxwxMrI&"
-            "returnTo=https://app-app0-app-hwq3xjpohg7cxxxdw34ba8.streamlit.app"
+            "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
+            "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
+            "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
         )
         components.html(
             f"""
             <script>
-                window.location.href = "{logout_url}" };
+                window.location.href = "{logout_url}";
             </script>
             """,
             height=0
