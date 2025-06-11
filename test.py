@@ -14,6 +14,8 @@ if "playing" not in st.session_state:
     st.session_state.playing = False
 if "speed" not in st.session_state:
     st.session_state.speed = 1
+if "button_clicked" not in st.session_state:
+    st.session_state.button_clicked = None
 
 # Check if user is already logged in
 if st.user and st.user.is_logged_in:
@@ -35,7 +37,7 @@ st.markdown(
     .stApp {
         background-color: #ffffff !important;
     }
-    /* Brighten button text */
+    /* Style buttons */
     .stButton > button {
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
@@ -43,8 +45,13 @@ st.markdown(
         font-size: calc(0.6rem + 0.3vw) !important; /* Tighter button text scaling */
         padding: 0.2rem 0.4rem !important; /* Compact padding */
         margin: 0 !important; /* Remove margins */
-        width: 100% !important; /* Full width within container */
+        width: auto !important; /* Default to content width */
         box-sizing: border-box !important;
+        border-radius: 4px !important;
+    }
+    /* Control buttons within flexbox */
+    .control-item .stButton > button {
+        width: 100% !important; /* Full width within control-item */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -245,55 +252,84 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons with custom flexbox wrapper
+    # Control buttons with form for interactivity
     with controls_placeholder:
-        st.markdown("<div class='controls-container'>", unsafe_allow_html=True)
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        with col1:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("⏪ Back"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
+        with st.form(key="control_form"):
+            st.markdown("<div class='controls-container'>", unsafe_allow_html=True)
+            col1, col2, col3, col4, col5, col6 = st.columns(6)
+            with col1:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                back_button = st.form_submit_button("⏪ Back")
+                st.markdown("</div>", unsafe_allow_html=True)
+            with col2:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                play_1x_button = st.form_submit_button("▶️ Play 1x")
+                st.markdown("</div>", unsafe_allow_html=True)
+            with col3:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                forward_button = st.form_submit_button("⏩ Forward")
+                st.markdown("</div>", unsafe_allow_html=True)
+            with col4:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                pause_button = st.form_submit_button("⏸️ Pause")
+                st.markdown("</div>", unsafe_allow_html=True)
+            with col5:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                stop_button = st.form_submit_button("⏹️ Stop")
+                st.markdown("</div>", unsafe_allow_html=True)
+            with col6:
+                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
+                play_5x_button = st.form_submit_button("⏩ Play 5x")
+                st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
-        with col2:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("▶️ Play 1x"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-            st.markdown("</div>", unsafe_allow_html=True)
-        with col3:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("⏩ Forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-            st.markdown("</div>", unsafe_allow_html=True)
-        with col4:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("⏸️ Pause"):
-                st.session_state.playing = False
-            st.markdown("</div>", unsafe_allow_html=True)
-        with col5:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("⏹️ Stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-            st.markdown("</div>", unsafe_allow_html=True)
-        with col6:
-            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-            if st.button("⏩ Play 5x"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
-            st.markdown("</div>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+
+            # Handle button clicks
+            if back_button:
+                st.session_state.button_clicked = "back"
+            elif play_1x_button:
+                st.session_state.button_clicked = "play_1x"
+            elif forward_button:
+                st.session_state.button_clicked = "forward"
+            elif pause_button:
+                st.session_state.button_clicked = "pause"
+            elif stop_button:
+                st.session_state.button_clicked = "stop"
+            elif play_5x_button:
+                st.session_state.button_clicked = "play_5x"
+
+    # Process button actions
+    if st.session_state.button_clicked == "back":
+        st.session_state.second = max(0, st.session_state.second - 1)
+        st.session_state.playing = False
+        mostrar_contenido()
+        render_slider()
+        mostrar_logo()
+        st.session_state.button_clicked = None
+    elif st.session_state.button_clicked == "play_1x":
+        st.session_state.playing = True
+        st.session_state.speed = 1
+        st.session_state.button_clicked = None
+    elif st.session_state.button_clicked == "forward":
+        st.session_state.second = min(359, st.session_state.second + 1)
+        st.session_state.playing = False
+        mostrar_contenido()
+        render_slider()
+        mostrar_logo()
+        st.session_state.button_clicked = None
+    elif st.session_state.button_clicked == "pause":
+        st.session_state.playing = False
+        st.session_state.button_clicked = None
+    elif st.session_state.button_clicked == "stop":
+        st.session_state.playing = False
+        st.session_state.second = 0
+        mostrar_contenido()
+        render_slider()
+        mostrar_logo()
+        st.session_state.button_clicked = None
+    elif st.session_state.button_clicked == "play_5x":
+        st.session_state.playing = True
+        st.session_state.speed = 5
+        st.session_state.button_clicked = None
 
     # Playback loop
     if st.session_state.playing:
@@ -308,6 +344,10 @@ else:
             mostrar_logo()
 
     # Logout button
+    st.markdown(
+        "<div style='display: flex; justify-content: center;'>",
+        unsafe_allow_html=True
+    )
     if st.button("Log out"):
         st.logout()
         st.session_state.logged_in = False
@@ -324,3 +364,4 @@ else:
             """,
             height=0
         )
+    st.markdown("</div>", unsafe_allow_html=True)
