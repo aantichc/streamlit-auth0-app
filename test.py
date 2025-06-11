@@ -119,7 +119,7 @@ st.markdown(
         margin: 1px 1px; /* Reduce horizontal margin */
         padding: 0.1rem 0.1rem; /* Reduce button padding */
         min-width: 50px; /* Set a smaller minimum width */
-        width: 1px; /* Prevent buttons from stretching */
+        width: auto; /* Prevent buttons from stretching */
     }
     </style>
 
@@ -243,35 +243,35 @@ else:
     with controls_placeholder:
         col1, col2, col3, col4, col5, col6 = st.columns(6)
         with col1:
-            if st.button("⏪"):
+            if st.button("⏪ Back"):
                 st.session_state.second = max(0, st.session_state.second - 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
         with col2:
-            if st.button("▶️1x"):
+            if st.button("▶️ Play 1x"):
                 st.session_state.playing = True
                 st.session_state.speed = 1
         with col3:
-            if st.button("⏩"):
+            if st.button("⏩ Forward"):
                 st.session_state.second = min(359, st.session_state.second + 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
         with col4:
-            if st.button("⏸️"):
+            if st.button("⏸️ Pause"):
                 st.session_state.playing = False
         with col5:
-            if st.button("⏹️"):
+            if st.button("⏹️ Stop"):
                 st.session_state.playing = False
                 st.session_state.second = 0
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
         with col6:
-            if st.button("⏩5x"):
+            if st.button("⏩ Play 5x"):
                 st.session_state.playing = True
                 st.session_state.speed = 5
 
