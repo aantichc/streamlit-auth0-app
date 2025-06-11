@@ -119,7 +119,7 @@ st.markdown(
         margin: 1px 1px; /* Reduce horizontal margin */
         padding: 0.1rem 0.1rem; /* Reduce button padding */
         min-width: 50px; /* Set a smaller minimum width */
-        width: 50px; /* Prevent buttons from stretching */
+        width: 1px; /* Prevent buttons from stretching */
     }
     </style>
 
