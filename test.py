@@ -40,7 +40,7 @@ st.markdown(
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
-        font-size: calc(0.8rem + 0.5vw) !important; /* Scale button text */
+        font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -50,42 +50,53 @@ st.markdown(
     /* Make main app title dark and scalable */
     h1 {
         color: #222222 !important;
-        font-size: calc(1.5rem + 2vw) !important; /* Scale title */
+        font-size: calc(1.2rem + 1.5vw) !important; /* Tighter title scaling */
         line-height: 1.2 !important;
     }
     /* Make login page header dark and scalable */
     h2, .stMarkdown h2 {
         color: #222222 !important;
-        font-size: calc(1.2rem + 1.5vw) !important; /* Scale header */
+        font-size: calc(1rem + 1vw) !important; /* Tighter header scaling */
     }
     /* Make login page write text dark and scalable */
     .stMarkdown p, .stText {
         color: #222222 !important;
-        font-size: calc(0.9rem + 0.8vw) !important; /* Scale write text */
+        font-size: calc(0.8rem + 0.6vw) !important; /* Tighter write text scaling */
     }
     /* Scale survival probability text */
     .survival-text {
-        font-size: calc(2rem + 4vw) !important; /* Scale large survival % */
+        font-size: calc(1.5rem + 3vw) !important; /* Tighter survival % scaling */
     }
     .survival-caption {
-        font-size: calc(0.8rem + 1vw) !important; /* Scale caption */
+        font-size: calc(0.7rem + 0.8vw) !important; /* Tighter caption scaling */
     }
-    /* Scale metrics text */
+    /* Scale metrics text tightly */
     .metric-label {
-        font-size: calc(0.7rem + 0.6vw) !important; /* Scale metric labels */
+        font-size: calc(0.6rem + 0.5vw) !important; /* Smaller metric labels */
     }
     .metric-value {
-        font-size: calc(1rem + 1.2vw) !important; /* Scale metric values */
+        font-size: calc(0.8rem + 0.8vw) !important; /* Smaller metric values */
     }
-    /* Prevent columns from stacking too early */
+    /* Force columns to stay horizontal and shrink */
     .stColumns > div {
         flex-shrink: 1 !important;
+        flex-grow: 0 !important;
         min-width: 0 !important;
+        max-width: 25% !important; /* Cap column width for 4 columns */
+        padding: 0.2rem !important; /* Reduce padding */
+        margin: 0 !important; /* Remove margins */
+        box-sizing: border-box !important;
+    }
+    /* Ensure columns container stays horizontal */
+    .stColumns {
+        display: flex !important;
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+        overflow-x: auto !important; /* Allow horizontal scroll if needed */
     }
     /* Ensure container width adapts */
     .main .block-container {
         max-width: 100% !important;
-        padding: 1rem !important;
+        padding: 0.5rem !important; /* Tighter padding */
     }
     </style>
     """,
