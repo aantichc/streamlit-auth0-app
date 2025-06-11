@@ -226,101 +226,68 @@ else:
     render_slider()
     mostrar_logo()
 
-# Control buttons
-with controls_placeholder:
-    # Use a custom HTML flexbox container for buttons
-    st.markdown(
-        """
-        <div class="button-container">
-            <button id="rewind">⏪</button>
-            <button id="play">▶️</button>
-            <button id="forward">⏩</button>
-            <button id="pause">⏸️</button>
-            <button id="stop">⏹️</button>
-            <button id="fast_forward">⏩</button>
-        </div>
-        <script>
-            // JavaScript to handle button clicks
-            document.getElementById("rewind").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "rewind"}, "*");
-            };
-            document.getElementById("play").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "play"}, "*");
-            };
-            document.getElementById("forward").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "forward"}, "*");
-            };
-            document.getElementById("pause").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "pause"}, "*");
-            };
-            document.getElementById("stop").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "stop"}, "*");
-            };
-            document.getElementById("fast_forward").onclick = function() {
-                window.parent.postMessage({type: "streamlit:setComponentValue", value: "fast_forward"}, "*");
-            };
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
+    # Control buttons
+    with controls_placeholder:
+        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        with col1:
+            if st.button("⏪ Back"):
+                st.session_state.second = max(0, st.session_state.second - 1)
+                st.session_state.playing = False
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+        with col2:
+            if st.button("▶️ Play 1x"):
+                st.session_state.playing = True
+                st.session_state.speed = 1
+        with col3:
+            if st.button("⏩ Forward"):
+                st.session_state.second = min(359, st.session_state.second + 1)
+                st.session_state.playing = False
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+        with col4:
+            if st.button("⏸️ Pause"):
+                st.session_state.playing = False
+        with col5:
+            if st.button("⏹️ Stop"):
+                st.session_state.playing = False
+                st.session_state.second = 0
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+        with col6:
+            if st.button("⏩ Play 5x"):
+                st.session_state.playing = True
+                st.session_state.speed = 5
 
-    # Handle button clicks using a custom component
-    button_click = st.experimental_get_query_params().get("button_click", [None])[0]
-    if button_click:
-        if button_click == "rewind":
-            st.session_state.second = max(0, st.session_state.second - 1)
-            st.session_state.playing = False
+    # Playback loop
+    if st.session_state.playing:
+        for _ in range(500):
+            if not st.session_state.playing or st.session_state.second >= 359:
+                st.session_state.playing = False
+                break
+            time.sleep(0.3)  # Slightly faster for smoother playback
+            st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
             mostrar_contenido()
             render_slider()
             mostrar_logo()
-        elif button_click == "play":
-            st.session_state.playing = True
-            st.session_state.speed = 1
-        elif button_click == "forward":
-            st.session_state.second = min(359, st.session_state.second + 1)
-            st.session_state.playing = False
-            mostrar_contenido()
-            render_slider()
-            mostrar_logo()
-        elif button_click == "pause":
-            st.session_state.playing = False
-        elif button_click == "stop":
-            st.session_state.playing = False
-            st.session_state.second = 0
-            mostrar_contenido()
-            render_slider()
-            mostrar_logo()
-        elif button_click == "fast_forward":
-            st.session_state.playing = True
-            st.session_state.speed = 5
-        # Clear query params to prevent repeated triggers
-        st.experimental_set_query_params()
-# Playback loop
-if st.session_state.playing:
-    for _ in range(500):
-        if not st.session_state.playing or st.session_state.second >= 359:
-            st.session_state.playing = False
-            break
-        time.sleep(0.3)  # Slightly faster for smoother playback
-        st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
-        mostrar_contenido()
-        render_slider()
-        mostrar_logo()
 
-# Logout button
-if st.button("Log out"):
-    st.logout()
-    st.session_state.logged_in = False
-    logout_url = (
-        "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
-        "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
-        "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
-    )
-    components.html(
-        f"""
-        <script>
-            window.location.href = "{logout_url}";
-        </script>
-        """,
-        height=0,
-    )
+    # Logout button
+    if st.button("Log out"):
+        st.logout()
+        st.session_state.logged_in = False
+        logout_url = (
+            "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
+            "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
+            "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
+        )
+        components.html(
+            f"""
+            <script>
+                window.location.href = "{logout_url}";
+            </script>
+            """,
+            height=0,
+        )
