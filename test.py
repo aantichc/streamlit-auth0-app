@@ -35,115 +35,78 @@ st.markdown(
     .stApp {
         background-color: #ffffff !important;
     }
-    /* Smaller buttons with minimal padding and tighter text */
+    /* Brighten button text */
     .stButton > button {
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
-        font-size: calc(0.6rem + 0.3vw) !important; /* Smaller button text */
-        padding: 0.2rem 0.4rem !important; /* Reduced padding */
-        height: 1.8rem !important; /* Shorter button height */
-        line-height: 1.2 !important; /* Tighter line height */
-        border-radius: 0.3rem !important; /* Smaller border radius */
-        margin: 0 !important; /* Remove default margins */
-        display: inline-flex !important; /* Consistent alignment */
-        align-items: center !important;
-        justify-content: center !important;
-        min-width: 2rem !important; /* Minimum width for small buttons */
-        box-sizing: border-box !important;
+        font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
         color: #ffffff !important;
         background-color: #004080 !important;
     }
-    /* Minimize spacing between columns */
-    [data-testid="column"] {
-        padding: 0 !important; /* Remove padding in columns */
-        margin: 0 !important; /* Remove margins */
-        min-width: 0 !important; /* Allow columns to shrink */
-        flex: 0 0 auto !important; /* Prevent columns from expanding */
-    }
-    [data-testid="stHorizontalBlock"] {
-        gap: 0.05rem !important; /* Even tighter gap between columns */
-        display: flex !important;
-        justify-content: center !important; /* Center buttons */
-        flex-wrap: nowrap !important; /* Prevent wrapping */
-    }
-    /* Override Streamlit's default column container */
-    .css-1l02zno {
-        padding: 0 !important; /* Remove any residual padding */
-        margin: 0 !important;
-    }
-    /* Custom button container for minimal spacing */
-    .button-container {
-        display: flex !important;
-        gap: 0.05rem !important; /* Ultra-tight gap */
-        justify-content: center !important;
-        align-items: center !important;
-        flex-wrap: nowrap !important;
-        width: 100% !important;
-    }
     /* Make main app title dark and scalable */
     h1 {
         color: #222222 !important;
-        font-size: calc(1.2rem + 1.5vw) !important;
+        font-size: calc(1.2rem + 1.5vw) !important; /* Tighter title scaling */
         line-height: 1.2 !important;
     }
     /* Make login page header dark and scalable */
     h2, .stMarkdown h2 {
         color: #222222 !important;
-        font-size: calc(1rem + 1vw) !important;
+        font-size: calc(1rem + 1vw) !important; /* Tighter header scaling */
     }
     /* Make login page write text dark and scalable */
     .stMarkdown p, .stText {
         color: #222222 !important;
-        font-size: calc(0.6rem + 0.6vw) !important;
+        font-size: calc(0.6rem + 0.6vw) !important; /* Tighter write text scaling */
     }
     /* Scale survival probability text */
     .survival-text {
-        font-size: calc(1.4rem + 2vw) !important;
+        font-size: calc(1.4rem + 2vw) !important; /* Tighter survival % scaling */
     }
     .survival-caption {
-        font-size: calc(0.6rem + 0.5vw) !important;
+        font-size: calc(0.6rem + 0.5vw) !important; /* Tighter caption scaling */
     }
     /* Scale metrics text */
     .metric-label {
-        font-size: calc(0.5rem + 0.4vw) !important;
-        white-space: nowrap !important;
+        font-size: calc(0.5rem + 0.4vw) !important; /* Smaller metric labels */
+        white-space: nowrap !important; /* Prevent label wrapping */
         overflow: hidden !important;
-        text-overflow: visible !important;
+        text-overflow: visible !important; /* Allow full text to show */
     }
     .metric-value {
-        font-size: calc(0.7rem + 0.6vw) !important;
-        min-height: 1.5rem !important;
+        font-size: calc(0.7rem + 0.6vw) !important; /* Smaller metric values */
+        min-height: 1.5rem !important; /* Consistent height for alignment */
     }
     /* Custom flexbox for metrics to stay horizontal */
     .metrics-container {
         display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+        overflow-x: auto !important; /* Horizontal scrollbar */
         width: 100% !important;
-        gap: 0.1rem !important;
+        gap: 0.1rem !important; /* Reduced spacing between metrics */
     }
     .metric-item {
-        flex: 1 !important;
-        min-width: 90px !important;
+        flex: 1 !important; /* Equal width distribution */
+        min-width: 90px !important; /* Reduced min-width for tighter fit */
         text-align: center !important;
-        padding: 0.1rem !important;
+        padding: 0.1rem !important; /* Reduced padding */
         box-sizing: border-box !important;
     }
     /* Ensure container width adapts */
     .main .block-container {
         max-width: 100% !important;
-        padding: 0.5rem !important;
+        padding: 0.5rem !important; /* Tighter padding */
     }
     /* Optional: scrollbar styling */
     .metrics-container::-webkit-scrollbar {
-        height: 6px !important;
+        height: 6px !important; /* Thinner scrollbar */
     }
     .metrics-container::-webkit-scrollbar-thumb {
-        background: #0056A7 !important;
+        background: #0056A7 !important; /* Match app theme */
         border-radius: 3px !important;
     }
     </style>
@@ -263,68 +226,101 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons
-    with controls_placeholder:
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        with col1:
-            if st.button("⏪", key="rewind"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col2:
-            if st.button("▶️", key="play"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-        with col3:
-            if st.button("⏩", key="forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col4:
-            if st.button("⏸️", key="pause"):
-                st.session_state.playing = False
-        with col5:
-            if st.button("⏹️", key="stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col6:
-            if st.button("⏩", key="fast_forward"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
+# Control buttons
+with controls_placeholder:
+    # Use a custom HTML flexbox container for buttons
+    st.markdown(
+        """
+        <div class="button-container">
+            <button id="rewind">⏪</button>
+            <button id="play">▶️</button>
+            <button id="forward">⏩</button>
+            <button id="pause">⏸️</button>
+            <button id="stop">⏹️</button>
+            <button id="fast_forward">⏩</button>
+        </div>
+        <script>
+            // JavaScript to handle button clicks
+            document.getElementById("rewind").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "rewind"}, "*");
+            };
+            document.getElementById("play").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "play"}, "*");
+            };
+            document.getElementById("forward").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "forward"}, "*");
+            };
+            document.getElementById("pause").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "pause"}, "*");
+            };
+            document.getElementById("stop").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "stop"}, "*");
+            };
+            document.getElementById("fast_forward").onclick = function() {
+                window.parent.postMessage({type: "streamlit:setComponentValue", value: "fast_forward"}, "*");
+            };
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # Playback loop
-    if st.session_state.playing:
-        for _ in range(500):
-            if not st.session_state.playing or st.session_state.second >= 359:
-                st.session_state.playing = False
-                break
-            time.sleep(0.3)  # Slightly faster for smoother playback
-            st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
+    # Handle button clicks using a custom component
+    button_click = st.experimental_get_query_params().get("button_click", [None])[0]
+    if button_click:
+        if button_click == "rewind":
+            st.session_state.second = max(0, st.session_state.second - 1)
+            st.session_state.playing = False
             mostrar_contenido()
             render_slider()
             mostrar_logo()
+        elif button_click == "play":
+            st.session_state.playing = True
+            st.session_state.speed = 1
+        elif button_click == "forward":
+            st.session_state.second = min(359, st.session_state.second + 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        elif button_click == "pause":
+            st.session_state.playing = False
+        elif button_click == "stop":
+            st.session_state.playing = False
+            st.session_state.second = 0
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        elif button_click == "fast_forward":
+            st.session_state.playing = True
+            st.session_state.speed = 5
+        # Clear query params to prevent repeated triggers
+        st.experimental_set_query_params()
+# Playback loop
+if st.session_state.playing:
+    for _ in range(500):
+        if not st.session_state.playing or st.session_state.second >= 359:
+            st.session_state.playing = False
+            break
+        time.sleep(0.3)  # Slightly faster for smoother playback
+        st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
+        mostrar_contenido()
+        render_slider()
+        mostrar_logo()
 
-    # Logout button
-    if st.button("Log out"):
-        st.logout()
-        st.session_state.logged_in = False
-        logout_url = (
-            "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
-            "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
-            "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
-        )
-        components.html(
-            f"""
-            <script>
-                window.location.href = "{logout_url}";
-            </script>
-            """,
-            height=0,
-        )
+# Logout button
+if st.button("Log out"):
+    st.logout()
+    st.session_state.logged_in = False
+    logout_url = (
+        "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
+        "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
+        "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
+    )
+    components.html(
+        f"""
+        <script>
+            window.location.href = "{logout_url}";
+        </script>
+        """,
+        height=0,
+    )
