@@ -116,9 +116,7 @@ st.markdown(
 
 # Login page
 if not st.session_state.logged_in:
-    st.title("Sistema de Login")
-    st.header("Iniciar Sesión o Registrarse")
-    st.write("Accede o crea una cuenta con Auth0.")
+    st.title("Vitrification Viability via Osmotic Response Calculator")
     if st.button("Log in / Sign up"):
         st.login("auth0")
         if st.user and st.user.is_logged_in:
