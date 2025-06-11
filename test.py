@@ -36,7 +36,7 @@ else:
     st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide", initial_sidebar_state="collapsed")
     st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
 
-    # Custom CSS for light mode and horizontal metrics layout
+    # Custom CSS for light mode, horizontal metrics layout, and white button text
     st.markdown("""
         <style>
         /* Force light mode */
@@ -53,11 +53,33 @@ else:
             flex-wrap: nowrap;
             justify-content: space-between;
             width: 100%;
+            margin-bottom: 20px;
         }
         .metrics-row > div {
             flex: 1;
             min-width: 0;
             margin: 0 10px;
+        }
+        /* White button text */
+        .stButton > button {
+            color: #FFFFFF !important;
+            background-color: #005EA8 !important;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .stButton > button:hover {
+            background-color: #004080 !important;
+        }
+        /* Ensure metrics text is visible */
+        .metric-text {
+            font-size: 28px !important;
+            font-weight: bold !important;
+            color: #222222 !important;
+        }
+        .metric-label {
+            font-size: 16px !important;
+            color: #888888 !important;
         }
         </style>
     """, unsafe_allow_html=True)
@@ -107,8 +129,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Area %</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Area%']:.3f}</div>
+                        <div class='metric-label'>Area %</div>
+                        <div class='metric-text'>{dato['Area%']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -116,8 +138,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Circularity</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
+                        <div class='metric-label'>Circularity</div>
+                        <div class='metric-text'>{dato['Circularity']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -125,8 +147,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Dehydration rate %/s</div>
-                    <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
+                        <div class='metric-label'>Dehydration rate %/s</div>
+                        <div class='metric-text'>{dato['Vdeshidratacion']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -134,8 +156,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Deplasmolysis rate %/s</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
+                        <div class='metric-label'>Deplasmolysis rate %/s</div>
+                        <div class='metric-text'>{dato['Vdeplasmolisi']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
