@@ -73,9 +73,13 @@ st.markdown(
     /* Scale metrics text tightly */
     .metric-label {
         font-size: calc(0.6rem + 0.5vw) !important; /* Smaller metric labels */
+        white-space: nowrap !important; /* Prevent label wrapping */
+        overflow: hidden !important; /* Hide overflow if needed */
+        text-overflow: ellipsis !important; /* Add ellipsis for very long text */
     }
     .metric-value {
         font-size: calc(0.8rem + 0.8vw) !important; /* Smaller metric values */
+        min-height: 2rem !important; /* Ensure consistent height for alignment */
     }
     /* Custom flexbox for metrics to stay horizontal */
     .metrics-container {
@@ -86,8 +90,8 @@ st.markdown(
         gap: 0.5rem !important; /* Space between metrics */
     }
     .metric-item {
-        flex: 1 0 20% !important; /* Each metric takes ~25% width, adjustable */
-        min-width: 80px !important; /* Minimum width to prevent collapse */
+        flex: 1 0 22% !important; /* Slightly larger base width for longer labels */
+        min-width: 100px !important; /* Increased min-width for longer labels */
         text-align: center !important;
         padding: 0.2rem !important;
         box-sizing: border-box !important;
