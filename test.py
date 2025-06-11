@@ -40,7 +40,11 @@ st.markdown(
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
-        font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
+        font-size: calc(0.6rem + 0.3vw) !important; /* Tighter button text scaling */
+        padding: 0.2rem 0.4rem !important; /* Compact padding */
+        margin: 0 !important; /* Remove margins */
+        width: 100% !important; /* Full width within container */
+        box-sizing: border-box !important;
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -87,13 +91,28 @@ st.markdown(
         flex-wrap: nowrap !important; /* Prevent wrapping */
         overflow-x: auto !important; /* Horizontal scrollbar */
         width: 100% !important;
-        gap: 0.1rem !important; /* Reduced spacing between metrics */
+        gap: 0.1rem !important; /* Minimal spacing between metrics */
     }
     .metric-item {
         flex: 1 !important; /* Equal width distribution */
-        min-width: 90px !important; /* Reduced min-width for tighter fit */
+        min-width: 90px !important; /* Tighter fit */
         text-align: center !important;
-        padding: 0.1rem !important; /* Reduced padding */
+        padding: 0.1rem !important; /* Minimal padding */
+        box-sizing: border-box !important;
+    }
+    /* Custom flexbox for control buttons to stay horizontal */
+    .controls-container {
+        display: flex !important;
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+        overflow-x: auto !important; /* Horizontal scrollbar */
+        width: 100% !important;
+        gap: 0.1rem !important; /* Minimal spacing between buttons */
+    }
+    .control-item {
+        flex: 1 !important; /* Equal width distribution */
+        min-width: 50px !important; /* Compact min-width for buttons */
+        text-align: center !important;
+        padding: 0.1rem !important; /* Minimal padding */
         box-sizing: border-box !important;
     }
     /* Ensure container width adapts */
@@ -101,12 +120,12 @@ st.markdown(
         max-width: 100% !important;
         padding: 0.5rem !important; /* Tighter padding */
     }
-    /* Optional: scrollbar styling */
-    .metrics-container::-webkit-scrollbar {
+    /* Scrollbar styling for metrics and controls */
+    .metrics-container::-webkit-scrollbar, .controls-container::-webkit-scrollbar {
         height: 6px !important; /* Thinner scrollbar */
     }
-    .metrics-container::-webkit-scrollbar-thumb {
-        background: #0056A7 !important; /* Match app theme */
+    .metrics-container::-webkit-scrollbar-thumb, .controls-container::-webkit-scrollbar-thumb {
+        background: #005EA8 !important; /* Match app theme */
         border-radius: 3px !important;
     }
     </style>
@@ -116,18 +135,19 @@ st.markdown(
 
 # Login page
 if not st.session_state.logged_in:
-    st.title("Vitrification Viability via Osmotic Response Calculator")
+    st.title("Sistema de Login")
+    st.header("Iniciar Sesión o Registrarse")
+    st.write("Accede o crea una cuenta con Auth0.")
     if st.button("Log in / Sign up"):
         st.login("auth0")
         if st.user and st.user.is_logged_in:
             st.session_state.logged_in = True
-            time.sleep(0.5)  # Reduced delay
+            time.sleep(0.5)
             st.rerun()
 
 # Main app
 else:
-    st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", 
-                unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
 
     # Load and preprocess data
     df = pd.read_csv("AioocyteV1.csv", sep=";")
@@ -159,14 +179,14 @@ else:
             st.markdown(
                 f"""
                 <div style='text-align: center;'>
-                    <div class='survival-text' style='font-weight: bold; color: #003087'>
+                    <div class='survival-text' style='font-weight: bold; color: #005EA8'>
                         {dato['Survival']:.1f}%
                     </div>
                     <div class='survival-caption' style='color: #555'>Probability of oocyte survival after vitrification</div>
                 </div>
                 <hr style='margin: 0.5rem 0;'>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
         with metrics_placeholder:
@@ -174,25 +194,24 @@ else:
                 f"""
                 <div class='metrics-container'>
                     <div class='metric-item'>
-                        <div class='metric-label' style='color:#003087;'>Area</div>
-                        <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Area%']:.3f}%</div>
+                        <div class='metric-label' style='color:#888;'>Area %</div>
+                        <div class='metric-value' style='font-weight: bold; color:#222'>{dato['Area%']:.3f}</div>
                     </div>
                     <div class='metric-item'>
-                        <div class='metric-label' style='color:#003087;'>Circularity</div>
-                        <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Circularity']:.3f}</div>
+                        <div class='metric-label' style='color:#888;'>Circularity</div>
+                        <div class='metric-value' style='font-weight: bold; color:#222'>{dato['Circularity']:.3f}</div>
                     </div>
                     <div class='metric-item'>
-                        <div class='metric-label' style='color:#003087;'>Dehydration</div>
-                        <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeshidratacion']:.2f}%/s</div>
+                        <div class='metric-label' style='color:#888;'>Dehydration rate %/s</div>
+                        <div class='metric-value' style='font-weight: bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
                     </div>
                     <div class='metric-item'>
-                        <div class='metric-item'>
-                        <div class='metric-label' style='color:#003087'>Deplasmolysis</div>
-                        <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeplasmolisi']:.2f}%/s</div>
+                        <div class='metric-label' style='color:#888;'>Deplasmolysis rate %/s</div>
+                        <div class='metric-value' style='font-weight: bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
                     </div>
                 </div>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
         with grafico_placeholder:
@@ -218,7 +237,7 @@ else:
                     </a>
                 </div>
                 """,
-                unsafe_allow_html=True,
+                unsafe_allow_html=True
             )
 
     # Initial render
@@ -226,41 +245,55 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons
+    # Control buttons with custom flexbox wrapper
     with controls_placeholder:
+        st.markdown("<div class='controls-container'>", unsafe_allow_html=True)
         col1, col2, col3, col4, col5, col6 = st.columns(6)
         with col1:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("⏪ Back"):
                 st.session_state.second = max(0, st.session_state.second - 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+            st.markdown("</div>", unsafe_allow_html=True)
         with col2:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("▶️ Play 1x"):
                 st.session_state.playing = True
                 st.session_state.speed = 1
+            st.markdown("</div>", unsafe_allow_html=True)
         with col3:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("⏩ Forward"):
                 st.session_state.second = min(359, st.session_state.second + 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+            st.markdown("</div>", unsafe_allow_html=True)
         with col4:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("⏸️ Pause"):
                 st.session_state.playing = False
+            st.markdown("</div>", unsafe_allow_html=True)
         with col5:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("⏹️ Stop"):
                 st.session_state.playing = False
                 st.session_state.second = 0
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+            st.markdown("</div>", unsafe_allow_html=True)
         with col6:
+            st.markdown("<div class='control-item'>", unsafe_allow_html=True)
             if st.button("⏩ Play 5x"):
                 st.session_state.playing = True
                 st.session_state.speed = 5
+            st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # Playback loop
     if st.session_state.playing:
@@ -268,7 +301,7 @@ else:
             if not st.session_state.playing or st.session_state.second >= 359:
                 st.session_state.playing = False
                 break
-            time.sleep(0.3)  # Slightly faster for smoother playback
+            time.sleep(0.3)
             st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
             mostrar_contenido()
             render_slider()
@@ -289,5 +322,5 @@ else:
                 window.location.href = "{logout_url}";
             </script>
             """,
-            height=0,
+            height=0
         )
