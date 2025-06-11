@@ -41,9 +41,6 @@ st.markdown(
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
         font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
-        padding: 0.5rem 1rem !important; /* Ensure padding for visibility */
-        border-radius: 4px !important;
-        width: 100% !important; /* Full width within flex constraints */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -98,20 +95,6 @@ st.markdown(
         text-align: center !important;
         padding: 0.1rem !important; /* Reduced padding */
         box-sizing: border-box !important;
-    }
-    /* Flexbox for control buttons */
-    .control-buttons-container {
-        display: flex !important;
-        flex-wrap: wrap !important; /* Allow wrapping */
-        gap: 0.5rem !important; /* Space between buttons */
-        justify-content: center !important; /* Center buttons */
-        padding: 0.5rem !important;
-        width: 100% !important;
-    }
-    .control-buttons-container .stButton {
-        flex: 1 1 120px !important; /* Adjusted min-width for buttons */
-        max-width: 150px !important; /* Cap button width */
-        display: block !important; /* Ensure buttons are visible */
     }
     /* Ensure container width adapts */
     .main .block-container {
@@ -203,6 +186,7 @@ else:
                         <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeshidratacion']:.2f}%/s</div>
                     </div>
                     <div class='metric-item'>
+                        <div class='metric-item'>
                         <div class='metric-label' style='color:#003087'>Deplasmolysis</div>
                         <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeplasmolisi']:.2f}%/s</div>
                     </div>
@@ -242,37 +226,41 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons (Flexbox Approach)
+    # Control buttons
     with controls_placeholder:
-        with st.container():
-            st.markdown('<div class="control-buttons-container">', unsafe_allow_html=True)
+        col1, col2, col3, col4, col5, col6 = st.columns(6)
+        with col1:
             if st.button("⏪ Back"):
                 st.session_state.second = max(0, st.session_state.second - 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+        with col2:
             if st.button("▶️ Play 1x"):
                 st.session_state.playing = True
                 st.session_state.speed = 1
+        with col3:
             if st.button("⏩ Forward"):
                 st.session_state.second = min(359, st.session_state.second + 1)
                 st.session_state.playing = False
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+        with col4:
             if st.button("⏸️ Pause"):
                 st.session_state.playing = False
+        with col5:
             if st.button("⏹️ Stop"):
                 st.session_state.playing = False
                 st.session_state.second = 0
                 mostrar_contenido()
                 render_slider()
                 mostrar_logo()
+        with col6:
             if st.button("⏩ Play 5x"):
                 st.session_state.playing = True
                 st.session_state.speed = 5
-            st.markdown('</div>', unsafe_allow_html=True)
 
     # Playback loop
     if st.session_state.playing:
