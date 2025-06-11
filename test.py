@@ -44,12 +44,13 @@ st.markdown(
         padding: 0.2rem 0.4rem !important; /* Reduced padding */
         height: 1.8rem !important; /* Shorter button height */
         line-height: 1.2 !important; /* Tighter line height */
-        border-radius: 0.3rem !important; /* Slightly smaller border radius */
+        border-radius: 0.3rem !important; /* Smaller border radius */
         margin: 0 !important; /* Remove default margins */
-        display: inline-flex !important; /* Ensure consistent alignment */
+        display: inline-flex !important; /* Consistent alignment */
         align-items: center !important;
         justify-content: center !important;
         min-width: 2rem !important; /* Minimum width for small buttons */
+        box-sizing: border-box !important;
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -60,9 +61,28 @@ st.markdown(
     [data-testid="column"] {
         padding: 0 !important; /* Remove padding in columns */
         margin: 0 !important; /* Remove margins */
+        min-width: 0 !important; /* Allow columns to shrink */
+        flex: 0 0 auto !important; /* Prevent columns from expanding */
     }
     [data-testid="stHorizontalBlock"] {
-        gap: 0.1rem !important; /* Minimal gap between columns */
+        gap: 0.05rem !important; /* Even tighter gap between columns */
+        display: flex !important;
+        justify-content: center !important; /* Center buttons */
+        flex-wrap: nowrap !important; /* Prevent wrapping */
+    }
+    /* Override Streamlit's default column container */
+    .css-1l02zno {
+        padding: 0 !important; /* Remove any residual padding */
+        margin: 0 !important;
+    }
+    /* Custom button container for minimal spacing */
+    .button-container {
+        display: flex !important;
+        gap: 0.05rem !important; /* Ultra-tight gap */
+        justify-content: center !important;
+        align-items: center !important;
+        flex-wrap: nowrap !important;
+        width: 100% !important;
     }
     /* Make main app title dark and scalable */
     h1 {
