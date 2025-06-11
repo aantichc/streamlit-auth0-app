@@ -5,6 +5,24 @@ from PIL import Image
 import os
 import time
 
+# Move set_page_config to the top, but only apply it after checking login state
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "second" not in st.session_state:
+    st.session_state.second = 0
+if "playing" not in st.session_state:
+    st.session_state.playing = False
+if "speed" not in st.session_state:
+    st.session_state.speed = 1
+
+# Check if user is already logged in
+if st.user and st.user.is_logged_in:
+    st.session_state.logged_in = True
+
+# Set page config as the first Streamlit command when logged in
+if st.session_state.logged_in:
+    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
+
 # Force light mode and brighten button text with custom CSS
 st.markdown(
     """
@@ -33,20 +51,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Initialize session state
-if "logged_in" not in st.session_state:
-    st.session_state.logged_in = False
-if "second" not in st.session_state:
-    st.session_state.second = 0
-if "playing" not in st.session_state:
-    st.session_state.playing = False
-if "speed" not in st.session_state:
-    st.session_state.speed = 1
-
-# Check if user is already logged in
-if st.user and st.user.is_logged_in:
-    st.session_state.logged_in = True
-
 # Login page
 if not st.session_state.logged_in:
     st.title("Sistema de Login")
@@ -61,7 +65,6 @@ if not st.session_state.logged_in:
 
 # Main app
 else:
-    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
     st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
 
     # Load and preprocess data
