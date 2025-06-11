@@ -238,37 +238,32 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons
     with controls_placeholder:
-        with st.container():
-            st.markdown('<div class="control-buttons-container">', unsafe_allow_html=True)
-            if st.button("⏪ Back"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-            if st.button("▶️ Play 1x"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-            if st.button("⏩ Forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-            if st.button("⏸️ Pause"):
-                st.session_state.playing = False
-            if st.button("⏹️ Stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-            if st.button("⏩ Play 5x"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
-            st.markdown('</div>', unsafe_allow_html=True)
+        # Dynamically adjust column count based on approximate screen width
+        num_buttons = 6
+        col_count = min(num_buttons, max(2, st.get_option("deprecation.showPyplotGlobalUse") or 4))  # Fallback to 4 columns
+        cols = st.columns(col_count)
+        buttons = [
+            ("⏪ Back", lambda: (
+                st.session_state.update({"second": max(0, st.session_state.second - 1), "playing": False}),
+                mostrar_contenido(), render_slider(), mostrar_logo()
+            )),
+            ("▶️ Play 1x", lambda: st.session_state.update({"playing": True, "speed": 1})),
+            ("⏩ Forward", lambda: (
+                st.session_state.update({"second": min(359, st.session_state.second + 1), "playing": False}),
+                mostrar_contenido(), render_slider(), mostrar_logo()
+            )),
+            ("⏸️ Pause", lambda: st.session_state.update({"playing": False})),
+            ("⏹️ Stop", lambda: (
+                st.session_state.update({"playing": False, "second": 0}),
+                mostrar_contenido(), render_slider(), mostrar_logo()
+            )),
+            ("⏩ Play 5x", lambda: st.session_state.update({"playing": True, "speed": 5}))
+        ]
+        for i, (label, action) in enumerate(buttons):
+            with cols[i % col_count]:
+                if st.button(label):
+                    action()
 
     # Playback loop
     if st.session_state.playing:
