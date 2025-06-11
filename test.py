@@ -5,6 +5,34 @@ from PIL import Image
 import os
 import time
 
+# Force light mode and brighten button text with custom CSS
+st.markdown(
+    """
+    <style>
+    /* Force light mode */
+    body {
+        color: #000000 !important;
+        background-color: #ffffff !important;
+    }
+    .stApp {
+        background-color: #ffffff !important;
+    }
+    /* Brighten button text */
+    .stButton > button {
+        color: #ffffff !important; /* Bright white text */
+        background-color: #005EA8 !important; /* Optional: Set a contrasting background */
+        font-weight: bold !important;
+    }
+    /* Ensure button text remains bright on hover */
+    .stButton > button:hover {
+        color: #ffffff !important;
+        background-color: #004080 !important; /* Slightly darker shade on hover */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
@@ -128,81 +156,4 @@ else:
     def mostrar_logo():
         with logo_placeholder:
             st.markdown("""
-            <div style='text-align: center; margin-top: 18px;'>
-                <a href='https://www.fertilab.com' target='_blank'>
-                    <img src='https://redinfertiles.com/wp-content/uploads/2022/04/logo-Barcelona.png' 
-                         alt='Fertilab Barcelona' width='240'/>
-                </a>
-            </div>
-            """, unsafe_allow_html=True)
-
-    # Initial render
-    mostrar_contenido()
-    render_slider()
-    mostrar_logo()
-
-    # Control buttons
-    with controles_placeholder:
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        with col1:
-            if st.button("⏪ Back"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col2:
-            if st.button("▶️ Play 1x"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-        with col3:
-            if st.button("⏩ Forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col4:
-            if st.button("⏸️ Pause"):
-                st.session_state.playing = False
-        with col5:
-            if st.button("⏹️ Stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col6:
-            if st.button("⏩ Play 5x"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
-
-    # Playback loop
-    if st.session_state.playing:
-        for _ in range(500):
-            if not st.session_state.playing or st.session_state.second >= 359:
-                st.session_state.playing = False
-                break
-            time.sleep(0.5)
-            st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
-            mostrar_contenido()
-            render_slider()
-            mostrar_logo()
-
-    # Logout button
-    if st.button("Cerrar Sesión"):
-        st.logout()
-        st.session_state.logged_in = False
-        logout_url = (
-            f"https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
-            f"client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
-            f"https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
-        )
-        components.html(
-            f"""
-            <script>
-                window.location.href = '{logout_url}';
-            </script>
-            """,
-            height=0
-        )
+            <div style='text-align: center; margin-top: 18
