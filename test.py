@@ -37,7 +37,7 @@ st.markdown(
     .stApp {
         background-color: #ffffff !important;
     }
-    /* Style buttons */
+    /* Style Streamlit buttons (e.g., Logout) */
     .stButton > button {
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
@@ -50,15 +50,29 @@ st.markdown(
         border-radius: 4px !important;
         white-space: nowrap !important; /* Prevent text wrapping */
     }
-    /* Control buttons within flexbox */
-    .control-item .stButton > button {
-        width: 100% !important; /* Full width within control-item */
-        font-size: calc(0.5rem + 0.25vw) !important; /* Even smaller for narrow screens */
-        padding: 0.1rem 0.2rem !important; /* Tighter padding */
-    }
-    /* Ensure button text remains bright on hover */
+    /* Ensure Streamlit button text remains bright on hover */
     .stButton > button:hover {
         color: #ffffff !important;
+        background-color: #004080 !important;
+    }
+    /* Style custom control buttons */
+    .control-button {
+        color: #ffffff !important; /* Bright white text */
+        background-color: #005EA8 !important; /* Match Streamlit buttons */
+        font-weight: bold !important;
+        font-size: calc(0.5rem + 0.25vw) !important; /* Smaller text */
+        padding: 0.1rem 0.2rem !important; /* Tighter padding */
+        margin: 0 !important;
+        width: 100% !important; /* Full width within control-item */
+        box-sizing: border-box !important;
+        border: none !important;
+        border-radius: 4px !important;
+        cursor: pointer !important;
+        white-space: nowrap !important;
+        text-align: center !important;
+        display: inline-block !important;
+    }
+    .control-button:hover {
         background-color: #004080 !important;
     }
     /* Make main app title dark and scalable */
@@ -117,10 +131,12 @@ st.markdown(
         overflow-x: auto !important; /* Horizontal scrollbar */
         width: 100% !important;
         gap: 0.05rem !important; /* Tighter spacing between buttons */
+        padding: 0 !important; /* Remove padding to maximize space */
+        margin: 0 !important; /* Remove margins */
     }
     .control-item {
         flex: 0 0 auto !important; /* Shrink to content */
-        min-width: 30px !important; /* Reduced min-width for shrinking */
+        min-width: 25px !important; /* Further reduced min-width */
         text-align: center !important;
         padding: 0.05rem !important; /* Tighter padding */
         box-sizing: border-box !important;
@@ -129,19 +145,20 @@ st.markdown(
     /* Shrink buttons on narrow screens */
     @media (max-width: 600px) {
         .control-item {
-            transform: scale(0.8) !important; /* Shrink buttons by 80% */
+            transform: scale(0.8) !important; /* Shrink by 80% */
         }
-        .control-item .stButton > button {
-            font-size: calc(0.4rem + 0.2vw) !important; /* Smaller text */
-            padding: 0.05rem 0.1rem !important; /* Tighter padding */
+        .control-button {
+            font-size: calc(0.4rem + 0.2vw) !important;
+            padding: 0.05rem 0.1rem !important;
         }
     }
     @media (max-width: 400px) {
         .control-item {
-            transform: scale(0.6) !important; /* Shrink further by 60% */
+            transform: scale(0.6) !important; /* Shrink by 60% */
         }
-        .control-item .stButton > button {
-            font-size: calc(0.35rem + 0.15vw) !important; /* Even smaller text */
+        .control-button {
+            font-size: calc(0.35rem + 0.15vw) !important;
+            padding: 0.03rem 0.08rem !important;
         }
     }
     /* Ensure container width adapts */
@@ -164,7 +181,9 @@ st.markdown(
 
 # Login page
 if not st.session_state.logged_in:
-    st.title("Vitrification Viability via Osmotic Response Calculator")
+    st.title("Sistema de Login")
+    st.header("Iniciar Sesión o Registrarse")
+    st.write("Accede o crea una cuenta con Auth0.")
     if st.button("Log in / Sign up"):
         st.login("auth0")
         if st.user and st.user.is_logged_in:
@@ -272,24 +291,49 @@ else:
     render_slider()
     mostrar_logo()
 
-    # Control buttons with form for interactivity
+    # Control buttons with custom HTML and JavaScript
     with controls_placeholder:
-        with st.form(key="control_form"):
-            st.markdown("<div class='controls-container'>", unsafe_allow_html=True)
-            buttons = [
-                ("⏪ Back", "back"),
-                ("▶️ Play 1x", "play_1x"),
-                ("⏩ Forward", "forward"),
-                ("⏸️ Pause", "pause"),
-                ("⏹️ Stop", "stop"),
-                ("⏩ Play 5x", "play_5x")
-            ]
-            for label, action in buttons:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                if st.form_submit_button(label):
-                    st.session_state.button_clicked = action
-                st.markdown("</div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
+        buttons = [
+            ("⏪ Back", "back"),
+            ("▶️ Play 1x", "play_1x"),
+            ("⏩ Forward", "forward"),
+            ("⏸️ Pause", "pause"),
+            ("⏹️ Stop", "stop"),
+            ("⏩ Play 5x", "play_5x")
+        ]
+        button_html = "<div class='controls-container'>"
+        for label, action in buttons:
+            button_html += f"""
+                <div class='control-item'>
+                    <button class='control-button' onclick='setButtonClicked("{action}")'>{label}</button>
+                </div>
+            """
+        button_html += "</div>"
+
+        # Render buttons
+        st.markdown(button_html, unsafe_allow_html=True)
+
+        # JavaScript to update session state
+        components.html(
+            """
+            <script>
+            function setButtonClicked(action) {
+                if (window.Streamlit) {
+                    Streamlit.setComponentValue(action);
+                } else {
+                    console.error("Streamlit API not available");
+                }
+            }
+            </script>
+            """,
+            height=0
+        )
+
+        # Capture button clicks
+        button_action = st.query_params.get("button_action")
+        if button_action:
+            st.session_state.button_clicked = button_action
+            st.query_params.clear()  # Clear query params to prevent repeated triggers
 
     # Process button actions
     if st.session_state.button_clicked == "back":
