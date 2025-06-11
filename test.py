@@ -31,10 +31,27 @@ if not st.session_state.logged_in:
             time.sleep(1)  # Brief delay to ensure session is set
             st.rerun()
 
-# Main app (from app.py)
+# Main app
 else:
-    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
+    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide", initial_sidebar_state="collapsed", theme="light")
     st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
+
+    # Custom CSS to ensure horizontal metrics layout
+    st.markdown("""
+        <style>
+        .metrics-row {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .metrics-row > div {
+            flex: 1;
+            min-width: 0;
+            margin: 0 10px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
     # Load and preprocess data
     df = pd.read_csv("AioocyteV1.csv", sep=";")
@@ -75,6 +92,7 @@ else:
             """, unsafe_allow_html=True)
 
         with metrics_placeholder:
+            st.markdown('<div class="metrics-row">', unsafe_allow_html=True)
             col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.markdown(
@@ -89,7 +107,7 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Circularity</div>
+                        <div style=' Emmett: 16px; color:#888;'>Circularity</div>
                         <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
@@ -112,6 +130,7 @@ else:
                     </div>
                     """, unsafe_allow_html=True
                 )
+            st.markdown('</div>', unsafe_allow_html=True)
 
         with grafico_placeholder:
             st.image("slider_background_final.png", use_container_width=True)
