@@ -31,73 +31,10 @@ if not st.session_state.logged_in:
             time.sleep(1)  # Brief delay to ensure session is set
             st.rerun()
 
-# Main app
+# Main app (from app.py)
 else:
-    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide", initial_sidebar_state="collapsed")
+    st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
     st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
-
-    # Custom CSS for light mode, horizontal metrics layout, white button text, and chart metrics
-    st.markdown("""
-        <style>
-        /* Force light mode */
-        body, .stApp {
-            background-color: #FFFFFF !important;
-            color: #000000 !important;
-        }
-        [data-testid="stHeader"] {
-            background-color: #FFFFFF !important;
-        }
-        /* Horizontal metrics layout */
-        .metrics-row {
-            display: flex;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-            width: 100%;
-            margin-bottom: 20px;
-        }
-        .metrics-row > div {
-            flex: 1;
-            min-width: 0;
-            margin: 0 10px;
-        }
-        /* White button text */
-        .stButton > button {
-            color: #FFFFFF !important;
-            background-color: #005EA8 !important;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        .stButton > button:hover {
-            background-color: #004080 !important;
-        }
-        /* Chart metrics styling */
-        .chart-metrics {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #FFFFFF !important;
-            font-size: 16px;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 10; /* Ensure metrics are above the image */
-        }
-        .chart-container {
-            position: relative;
-            display: inline-block;
-        }
-        .metric-text {
-            font-size: 28px !important;
-            font-weight: bold !important;
-            color: #222222 !important;
-        }
-        .metric-label {
-            font-size: 16px !important;
-            color: #888888 !important;
-        }
-        </style>
-    """, unsafe_allow_html=True)
 
     # Load and preprocess data
     df = pd.read_csv("AioocyteV1.csv", sep=";")
@@ -138,14 +75,13 @@ else:
             """, unsafe_allow_html=True)
 
         with metrics_placeholder:
-            st.markdown('<div class="metrics-row">', unsafe_allow_html=True)
             col1, col2, col3, col4 = st.columns(4)
             with col1:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div class='metric-label'>Area %</div>
-                        <div class='metric-text'>{dato['Area%']:.3f}</div>
+                        <div style='font-size:16px; color:#888;'>Area %</div>
+                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Area%']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -153,8 +89,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div class='metric-label'>Circularity</div>
-                        <div class='metric-text'>{dato['Circularity']:.3f}</div>
+                        <div style='font-size:16px; color:#888;'>Circularity</div>
+                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -162,8 +98,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div class='metric-label'>Dehydration rate %/s</div>
-                        <div class='metric-text'>{dato['Vdeshidratacion']:.2f}%</div>
+                        <div style='font-size:16px; color:#888;'>Dehydration rate %/s</div>
+                    <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -171,32 +107,14 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div class='metric-label'>Deplasmolysis rate %/s</div>
-                        <div class='metric-text'>{dato['Vdeplasmolisi']:.2f}%</div>
+                        <div style='font-size:16px; color:#888;'>Deplasmolysis rate %/s</div>
+                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
-            st.markdown('</div>', unsafe_allow_html=True)
 
         with grafico_placeholder:
-            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
-            if os.path.exists("slider_background_final.png"):
-                st.image("slider_background_final.png", use_container_width=True)
-            else:
-                st.warning("Chart image 'slider_background_final.png' not found.")
-            # Overlay metrics on the chart
-            st.markdown(
-                f"""
-                <div class="chart-metrics">
-                    Area %: {dato['Area%']:.3f}<br>
-                    Circularity: {dato['Circularity']:.3f}<br>
-                    Dehydration rate %/s: {dato['Vdeshidratacion']:.2f}%<br>
-                    Deplasmolysis rate %/s: {dato['Vdeplasmolisi']:.2f}%
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.image("slider_background_final.png", use_container_width=True)
 
     def render_slider():
         with slider_placeholder:
