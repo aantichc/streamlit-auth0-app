@@ -230,37 +230,37 @@ else:
     with controls_placeholder:
         col1, col2, col3, col4, col5, col6 = st.columns(6)
         with col1:
-            if st.button("⏪"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col2:
-            if st.button("▶️"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-        with col3:
-            if st.button("⏩"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col4:
-            if st.button("⏸️"):
-                st.session_state.playing = False
-        with col5:
-            if st.button("⏹️"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col6:
-            if st.button("⏩"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
+            if st.button("⏪", key="rewind"):
+            st.session_state.second = max(0, st.session_state.second - 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+    with col2:
+        if st.button("▶️", key="play"):
+            st.session_state.playing = True
+            st.session_state.speed = 1
+    with col3:
+        if st.button("⏩", key="forward"):  # Unique key for forward button
+            st.session_state.second = min(359, st.session_state.second + 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+    with col4:
+        if st.button("⏸️", key="pause"):
+            st.session_state.playing = False
+    with col5:
+        if st.button("⏹️", key="stop"):
+            st.session_state.playing = False
+            st.session_state.second = 0
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+    with col6:
+        if st.button("⏩", key="fast_forward"):  # Unique key for fast-forward button
+            st.session_state.playing = True
+            st.session_state.speed = 5
 
     # Playback loop
     if st.session_state.playing:
