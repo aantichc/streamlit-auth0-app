@@ -111,14 +111,14 @@ st.markdown(
     }
     /* Reduce padding between columns */
     .st-emotion-cache-1r4qj8v {
-        padding-right: 0.5rem; /* Default is ~1rem, reduce to 0.5rem */
-        padding-left: 0.5rem;
+        padding-right: 0.1rem; /* Default is ~1rem, reduce to 0.5rem */
+        padding-left: 0.1rem;
     }
     /* Reduce button margins and width */
     .stButton > button {
-        margin: 5px 2px; /* Reduce horizontal margin */
-        padding: 0.25rem 0.5rem; /* Reduce button padding */
-        min-width: 80px; /* Set a smaller minimum width */
+        margin: 1px 1px; /* Reduce horizontal margin */
+        padding: 0.1rem 0.1rem; /* Reduce button padding */
+        min-width: 50px; /* Set a smaller minimum width */
         width: auto; /* Prevent buttons from stretching */
     }
     </style>
