@@ -227,41 +227,38 @@ else:
     mostrar_logo()
 
     # Control buttons
-    with controls_placeholder:
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        with col1:
-            if st.button("⏪ Back"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col2:
-            if st.button("▶️ Play 1x"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-        with col3:
-            if st.button("⏩ Forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col4:
-            if st.button("⏸️ Pause"):
-                st.session_state.playing = False
-        with col5:
-            if st.button("⏹️ Stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col6:
-            if st.button("⏩ Play 5x"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
-
+with controls_placeholder:
+    col1, col2, col3 = st.columns(3)  # Reduced from 6 to 3 columns
+    with col1:
+        if st.button("⏪ Back"):
+            st.session_state.second = max(0, st.session_state.second - 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        if st.button("⏩ Forward"):
+            st.session_state.second = min(359, st.session_state.second + 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+    with col2:
+        if st.button("▶️ Play 1x"):
+            st.session_state.playing = True
+            st.session_state.speed = 1
+        if st.button("⏩ Play 5x"):
+            st.session_state.playing = True
+            st.session_state.speed = 5
+    with col3:
+        if st.button("⏸️ Pause"):
+            st.session_state.playing = False
+        if st.button("⏹️ Stop"):
+            st.session_state.playing = False
+            st.session_state.second = 0
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+            
     # Playback loop
     if st.session_state.playing:
         for _ in range(500):
