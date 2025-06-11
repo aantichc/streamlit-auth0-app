@@ -23,7 +23,7 @@ if st.user and st.user.is_logged_in:
 if st.session_state.logged_in:
     st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
 
-# Force light mode, brighten button text, and make title and login text dark with custom CSS
+# Force light mode, brighten button text, make text dark, and scale text with window size
 st.markdown(
     """
     <style>
@@ -40,23 +40,52 @@ st.markdown(
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
+        font-size: calc(0.8rem + 0.5vw) !important; /* Scale button text */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
         color: #ffffff !important;
-        background-color: #004080 !important; /* Slightly darker shade on hover */
+        background-color: #004080 !important;
     }
-    /* Make main app title dark */
+    /* Make main app title dark and scalable */
     h1 {
-        color: #222222 !important; /* Dark color for the title */
+        color: #222222 !important;
+        font-size: calc(1.5rem + 2vw) !important; /* Scale title */
+        line-height: 1.2 !important;
     }
-    /* Make login page header dark */
+    /* Make login page header dark and scalable */
     h2, .stMarkdown h2 {
-        color: #222222 !important; /* Dark color for st.header */
+        color: #222222 !important;
+        font-size: calc(1.2rem + 1.5vw) !important; /* Scale header */
     }
-    /* Make login page write text dark */
+    /* Make login page write text dark and scalable */
     .stMarkdown p, .stText {
-        color: #222222 !important; /* Dark color for st.write */
+        color: #222222 !important;
+        font-size: calc(0.9rem + 0.8vw) !important; /* Scale write text */
+    }
+    /* Scale survival probability text */
+    .survival-text {
+        font-size: calc(2rem + 4vw) !important; /* Scale large survival % */
+    }
+    .survival-caption {
+        font-size: calc(0.8rem + 1vw) !important; /* Scale caption */
+    }
+    /* Scale metrics text */
+    .metric-label {
+        font-size: calc(0.7rem + 0.6vw) !important; /* Scale metric labels */
+    }
+    .metric-value {
+        font-size: calc(1rem + 1.2vw) !important; /* Scale metric values */
+    }
+    /* Prevent columns from stacking too early */
+    .stColumns > div {
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
+    }
+    /* Ensure container width adapts */
+    .main .block-container {
+        max-width: 100% !important;
+        padding: 1rem !important;
     }
     </style>
     """,
@@ -109,10 +138,10 @@ else:
         with supervivencia_placeholder:
             st.markdown(f"""
                 <div style='text-align: center; margin-top: 12px; margin-bottom: 0px;'>
-                    <div style='font-size: 96px; font-weight: bold; color: #005EA8; line-height: 0.85;'>
+                    <div class='survival-text' style='font-weight: bold; color: #005EA8; line-height: 0.85;'>
                         {dato['Survival']:.1f}%
                     </div>
-                    <div style='font-size: 22px; color: #444; margin-top: 6px;'>Probability of oocyte survival after vitrification</div>
+                    <div class='survival-caption' style='color: #444; margin-top: 6px;'>Probability of oocyte survival after vitrification</div>
                 </div>
                 <hr style="margin: 1px 0;">
             """, unsafe_allow_html=True)
@@ -123,8 +152,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Area %</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Area%']:.3f}</div>
+                        <div class='metric-label' style='color:#888;'>Area %</div>
+                        <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Area%']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -132,8 +161,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Circularity</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
+                        <div class='metric-label' style='color:#888;'>Circularity</div>
+                        <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -141,8 +170,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Dehydration rate %/s</div>
-                    <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
+                        <div class='metric-label' style='color:#888;'>Dehydration rate %/s</div>
+                        <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
@@ -150,8 +179,8 @@ else:
                 st.markdown(
                     f"""
                     <div style='text-align:center;'>
-                        <div style='font-size:16px; color:#888;'>Deplasmolysis rate %/s</div>
-                        <div style='font-size:28px; font-weight:bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
+                        <div class='metric-label' style='color:#888;'>Deplasmolysis rate %/s</div>
+                        <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
                     </div>
                     """, unsafe_allow_html=True
                 )
