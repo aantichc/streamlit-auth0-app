@@ -5,7 +5,7 @@ from PIL import Image
 import os
 import time
 
-# Move set_page_config to the top, but only apply it after checking login state
+# Initialize session state
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "second" not in st.session_state:
@@ -23,7 +23,7 @@ if st.user and st.user.is_logged_in:
 if st.session_state.logged_in:
     st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide")
 
-# Force light mode and brighten button text with custom CSS
+# Force light mode, brighten button text, and make title dark with custom CSS
 st.markdown(
     """
     <style>
@@ -38,13 +38,17 @@ st.markdown(
     /* Brighten button text */
     .stButton > button {
         color: #ffffff !important; /* Bright white text */
-        background-color: #005EA8 !important; /* Optional: Set a contrasting background */
+        background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
         color: #ffffff !important;
         background-color: #004080 !important; /* Slightly darker shade on hover */
+    }
+    /* Make title dark */
+    h1 {
+        color: #222222 !important; /* Dark color for the title */
     }
     </style>
     """,
