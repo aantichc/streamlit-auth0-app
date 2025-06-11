@@ -109,18 +109,6 @@ st.markdown(
         background: #0056A7 !important; /* Match app theme */
         border-radius: 3px !important;
     }
-    /* Reduce padding between columns */
-    .st-emotion-cache-1r4qj8v {
-        padding-right: 0.1rem; /* Default is ~1rem, reduce to 0.5rem */
-        padding-left: 0.1rem;
-    }
-    /* Reduce button margins and width */
-    .stButton > button {
-        margin: 1px 1px; /* Reduce horizontal margin */
-        padding: 0.1rem 0.1rem; /* Reduce button padding */
-        min-width: 50px; /* Set a smaller minimum width */
-        width: auto; /* Prevent buttons from stretching */
-    }
     </style>
 
     """,
