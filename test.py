@@ -36,7 +36,7 @@ else:
     st.set_page_config(page_title="Vitrification Viability via Osmotic Response", layout="wide", initial_sidebar_state="collapsed")
     st.markdown("<h1 style='text-align: center;'>Vitrification Viability via Osmotic Response</h1>", unsafe_allow_html=True)
 
-    # Custom CSS for light mode, horizontal metrics layout, and white button text
+    # Custom CSS for light mode, horizontal metrics layout, white button text, and chart metrics
     st.markdown("""
         <style>
         /* Force light mode */
@@ -71,7 +71,17 @@ else:
         .stButton > button:hover {
             background-color: #004080 !important;
         }
-        /* Ensure metrics text is visible */
+        /* Chart metrics styling */
+        .chart-metrics {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #FFFFFF !important;
+            font-size: 16px;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 5px;
+        }
         .metric-text {
             font-size: 28px !important;
             font-weight: bold !important;
@@ -165,6 +175,18 @@ else:
 
         with grafico_placeholder:
             st.image("slider_background_final.png", use_container_width=True)
+            # Overlay metrics on the chart
+            st.markdown(
+                f"""
+                <div class="chart-metrics">
+                    Area %: {dato['Area%']:.3f}<br>
+                    Circularity: {dato['Circularity']:.3f}<br>
+                    Dehydration rate %/s: {dato['Vdeshidratacion']:.2f}%<br>
+                    Deplasmolysis rate %/s: {dato['Vdeplasmolisi']:.2f}%
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
     def render_slider():
         with slider_placeholder:
