@@ -81,6 +81,11 @@ else:
             background-color: rgba(0, 0, 0, 0.6);
             padding: 10px;
             border-radius: 5px;
+            z-index: 10; /* Ensure metrics are above the image */
+        }
+        .chart-container {
+            position: relative;
+            display: inline-block;
         }
         .metric-text {
             font-size: 28px !important;
@@ -174,7 +179,11 @@ else:
             st.markdown('</div>', unsafe_allow_html=True)
 
         with grafico_placeholder:
-            st.image("slider_background_final.png", use_container_width=True)
+            st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+            if os.path.exists("slider_background_final.png"):
+                st.image("slider_background_final.png", use_container_width=True)
+            else:
+                st.warning("Chart image 'slider_background_final.png' not found.")
             # Overlay metrics on the chart
             st.markdown(
                 f"""
@@ -187,6 +196,7 @@ else:
                 """,
                 unsafe_allow_html=True
             )
+            st.markdown('</div>', unsafe_allow_html=True)
 
     def render_slider():
         with slider_placeholder:
