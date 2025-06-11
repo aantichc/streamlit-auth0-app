@@ -48,10 +48,13 @@ st.markdown(
         width: auto !important; /* Default to content width */
         box-sizing: border-box !important;
         border-radius: 4px !important;
+        white-space: nowrap !important; /* Prevent text wrapping */
     }
     /* Control buttons within flexbox */
     .control-item .stButton > button {
         width: 100% !important; /* Full width within control-item */
+        font-size: calc(0.5rem + 0.25vw) !important; /* Even smaller for narrow screens */
+        padding: 0.1rem 0.2rem !important; /* Tighter padding */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -113,14 +116,33 @@ st.markdown(
         flex-wrap: nowrap !important; /* Prevent wrapping */
         overflow-x: auto !important; /* Horizontal scrollbar */
         width: 100% !important;
-        gap: 0.1rem !important; /* Minimal spacing between buttons */
+        gap: 0.05rem !important; /* Tighter spacing between buttons */
     }
     .control-item {
-        flex: 1 !important; /* Equal width distribution */
-        min-width: 50px !important; /* Compact min-width for buttons */
+        flex: 0 0 auto !important; /* Shrink to content */
+        min-width: 30px !important; /* Reduced min-width for shrinking */
         text-align: center !important;
-        padding: 0.1rem !important; /* Minimal padding */
+        padding: 0.05rem !important; /* Tighter padding */
         box-sizing: border-box !important;
+        transform-origin: center !important;
+    }
+    /* Shrink buttons on narrow screens */
+    @media (max-width: 600px) {
+        .control-item {
+            transform: scale(0.8) !important; /* Shrink buttons by 80% */
+        }
+        .control-item .stButton > button {
+            font-size: calc(0.4rem + 0.2vw) !important; /* Smaller text */
+            padding: 0.05rem 0.1rem !important; /* Tighter padding */
+        }
+    }
+    @media (max-width: 400px) {
+        .control-item {
+            transform: scale(0.6) !important; /* Shrink further by 60% */
+        }
+        .control-item .stButton > button {
+            font-size: calc(0.35rem + 0.15vw) !important; /* Even smaller text */
+        }
     }
     /* Ensure container width adapts */
     .main .block-container {
@@ -256,46 +278,20 @@ else:
     with controls_placeholder:
         with st.form(key="control_form"):
             st.markdown("<div class='controls-container'>", unsafe_allow_html=True)
-            col1, col2, col3, col4, col5, col6 = st.columns(6)
-            with col1:
+            buttons = [
+                ("⏪ Back", "back"),
+                ("▶️ Play 1x", "play_1x"),
+                ("⏩ Forward", "forward"),
+                ("⏸️ Pause", "pause"),
+                ("⏹️ Stop", "stop"),
+                ("⏩ Play 5x", "play_5x")
+            ]
+            for label, action in buttons:
                 st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                back_button = st.form_submit_button("⏪ Back")
-                st.markdown("</div>", unsafe_allow_html=True)
-            with col2:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                play_1x_button = st.form_submit_button("▶️ Play 1x")
-                st.markdown("</div>", unsafe_allow_html=True)
-            with col3:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                forward_button = st.form_submit_button("⏩ Forward")
-                st.markdown("</div>", unsafe_allow_html=True)
-            with col4:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                pause_button = st.form_submit_button("⏸️ Pause")
-                st.markdown("</div>", unsafe_allow_html=True)
-            with col5:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                stop_button = st.form_submit_button("⏹️ Stop")
-                st.markdown("</div>", unsafe_allow_html=True)
-            with col6:
-                st.markdown("<div class='control-item'>", unsafe_allow_html=True)
-                play_5x_button = st.form_submit_button("⏩ Play 5x")
+                if st.form_submit_button(label):
+                    st.session_state.button_clicked = action
                 st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
-
-            # Handle button clicks
-            if back_button:
-                st.session_state.button_clicked = "back"
-            elif play_1x_button:
-                st.session_state.button_clicked = "play_1x"
-            elif forward_button:
-                st.session_state.button_clicked = "forward"
-            elif pause_button:
-                st.session_state.button_clicked = "pause"
-            elif stop_button:
-                st.session_state.button_clicked = "stop"
-            elif play_5x_button:
-                st.session_state.button_clicked = "play_5x"
 
     # Process button actions
     if st.session_state.button_clicked == "back":
@@ -326,7 +322,7 @@ else:
         render_slider()
         mostrar_logo()
         st.session_state.button_clicked = None
-    elif st.session_state.button_clicked == "play_5x":
+    elif st.session_state.button_clicked == "play_5":
         st.session_state.playing = True
         st.session_state.speed = 5
         st.session_state.button_clicked = None
@@ -338,28 +334,25 @@ else:
                 st.session_state.playing = False
                 break
             time.sleep(0.3)
-            st.session_state.second = min(359, st.session_state.second + st.session_state.speed)
+            st.session_state.second += st.session_state.speed
             mostrar_contenido()
             render_slider()
             mostrar_logo()
 
     # Logout button
-    st.markdown(
-        "<div style='display: flex; justify-content: center;'>",
-        unsafe_allow_html=True
-    )
+    st.markdown("<div style='display: flex; justify-content: center'>", unsafe_allow_html=True)
     if st.button("Log out"):
         st.logout()
         st.session_state.logged_in = False
         logout_url = (
-            "https://dev-47xxwxkuddgbl0fo.us.auth0.com/v2/logout?"
-            "client_id=mTQf6FD1dPJm8SVz7sVaFh7LRlnQWMrI&"
-            "returnTo=https://app-app0-app-hwq3xjpohg7cilzdu34ba8.streamlit.app"
+            "https://dev-47xxwx.app.auth0.com/v2/logout?"
+            "client_id=mTQf6FD1d47xxwxMrI&"
+            "returnTo=https://app-app0-app-hwq3xjpohg7cxxxdw34ba8.streamlit.app"
         )
         components.html(
             f"""
             <script>
-                window.location.href = "{logout_url}";
+                window.location.href = "{logout_url}" };
             </script>
             """,
             height=0
