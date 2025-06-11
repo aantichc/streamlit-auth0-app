@@ -35,78 +35,95 @@ st.markdown(
     .stApp {
         background-color: #ffffff !important;
     }
-    /* Brighten button text */
+    /* Smaller buttons with minimal padding and tighter text */
     .stButton > button {
         color: #ffffff !important; /* Bright white text */
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
-        font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
+        font-size: calc(0.6rem + 0.3vw) !important; /* Smaller button text */
+        padding: 0.2rem 0.4rem !important; /* Reduced padding */
+        height: 1.8rem !important; /* Shorter button height */
+        line-height: 1.2 !important; /* Tighter line height */
+        border-radius: 0.3rem !important; /* Slightly smaller border radius */
+        margin: 0 !important; /* Remove default margins */
+        display: inline-flex !important; /* Ensure consistent alignment */
+        align-items: center !important;
+        justify-content: center !important;
+        min-width: 2rem !important; /* Minimum width for small buttons */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
         color: #ffffff !important;
         background-color: #004080 !important;
     }
+    /* Minimize spacing between columns */
+    [data-testid="column"] {
+        padding: 0 !important; /* Remove padding in columns */
+        margin: 0 !important; /* Remove margins */
+    }
+    [data-testid="stHorizontalBlock"] {
+        gap: 0.1rem !important; /* Minimal gap between columns */
+    }
     /* Make main app title dark and scalable */
     h1 {
         color: #222222 !important;
-        font-size: calc(1.2rem + 1.5vw) !important; /* Tighter title scaling */
+        font-size: calc(1.2rem + 1.5vw) !important;
         line-height: 1.2 !important;
     }
     /* Make login page header dark and scalable */
     h2, .stMarkdown h2 {
         color: #222222 !important;
-        font-size: calc(1rem + 1vw) !important; /* Tighter header scaling */
+        font-size: calc(1rem + 1vw) !important;
     }
     /* Make login page write text dark and scalable */
     .stMarkdown p, .stText {
         color: #222222 !important;
-        font-size: calc(0.6rem + 0.6vw) !important; /* Tighter write text scaling */
+        font-size: calc(0.6rem + 0.6vw) !important;
     }
     /* Scale survival probability text */
     .survival-text {
-        font-size: calc(1.4rem + 2vw) !important; /* Tighter survival % scaling */
+        font-size: calc(1.4rem + 2vw) !important;
     }
     .survival-caption {
-        font-size: calc(0.6rem + 0.5vw) !important; /* Tighter caption scaling */
+        font-size: calc(0.6rem + 0.5vw) !important;
     }
     /* Scale metrics text */
     .metric-label {
-        font-size: calc(0.5rem + 0.4vw) !important; /* Smaller metric labels */
-        white-space: nowrap !important; /* Prevent label wrapping */
+        font-size: calc(0.5rem + 0.4vw) !important;
+        white-space: nowrap !important;
         overflow: hidden !important;
-        text-overflow: visible !important; /* Allow full text to show */
+        text-overflow: visible !important;
     }
     .metric-value {
-        font-size: calc(0.7rem + 0.6vw) !important; /* Smaller metric values */
-        min-height: 1.5rem !important; /* Consistent height for alignment */
+        font-size: calc(0.7rem + 0.6vw) !important;
+        min-height: 1.5rem !important;
     }
     /* Custom flexbox for metrics to stay horizontal */
     .metrics-container {
         display: flex !important;
-        flex-wrap: nowrap !important; /* Prevent wrapping */
-        overflow-x: auto !important; /* Horizontal scrollbar */
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
         width: 100% !important;
-        gap: 0.1rem !important; /* Reduced spacing between metrics */
+        gap: 0.1rem !important;
     }
     .metric-item {
-        flex: 1 !important; /* Equal width distribution */
-        min-width: 90px !important; /* Reduced min-width for tighter fit */
+        flex: 1 !important;
+        min-width: 90px !important;
         text-align: center !important;
-        padding: 0.1rem !important; /* Reduced padding */
+        padding: 0.1rem !important;
         box-sizing: border-box !important;
     }
     /* Ensure container width adapts */
     .main .block-container {
         max-width: 100% !important;
-        padding: 0.5rem !important; /* Tighter padding */
+        padding: 0.5rem !important;
     }
     /* Optional: scrollbar styling */
     .metrics-container::-webkit-scrollbar {
-        height: 6px !important; /* Thinner scrollbar */
+        height: 6px !important;
     }
     .metrics-container::-webkit-scrollbar-thumb {
-        background: #0056A7 !important; /* Match app theme */
+        background: #0056A7 !important;
         border-radius: 3px !important;
     }
     </style>
