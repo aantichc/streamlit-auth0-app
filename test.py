@@ -221,14 +221,17 @@ else:
                 unsafe_allow_html=True,
             )
 
-    # Initial render
-    mostrar_contenido()
-    render_slider()
-    mostrar_logo()
+    # Initialize session state
+if 'second' not in st.session_state:
+    st.session_state.second = 0
+if 'playing' not in st.session_state:
+    st.session_state.playing = False
+if 'speed' not in st.session_state:
+    st.session_state.speed = 1
 
-    # Control buttons
-with controls_placeholder:
-    col1, col2, col3 = st.columns(3)  # Reduced from 6 to 3 columns
+# Control buttons in sidebar
+with st.sidebar:
+    col1, col2, col3 = st.columns(3)
     with col1:
         if st.button("⏪ Back"):
             st.session_state.second = max(0, st.session_state.second - 1)
@@ -258,6 +261,11 @@ with controls_placeholder:
             mostrar_contenido()
             render_slider()
             mostrar_logo()
+
+# Main content (graph, slider, logo)
+mostrar_contenido()
+render_slider()
+mostrar_logo()
             
     # Playback loop
     if st.session_state.playing:
