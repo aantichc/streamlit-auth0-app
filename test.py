@@ -41,6 +41,9 @@ st.markdown(
         background-color: #005EA8 !important; /* Contrasting background */
         font-weight: bold !important;
         font-size: calc(0.7rem + 0.4vw) !important; /* Tighter button text scaling */
+        padding: 0.5rem 1rem !important; /* Ensure padding for visibility */
+        border-radius: 4px !important;
+        width: 100% !important; /* Full width within flex constraints */
     }
     /* Ensure button text remains bright on hover */
     .stButton > button:hover {
@@ -103,11 +106,12 @@ st.markdown(
         gap: 0.5rem !important; /* Space between buttons */
         justify-content: center !important; /* Center buttons */
         padding: 0.5rem !important;
+        width: 100% !important;
     }
     .control-buttons-container .stButton {
-        flex: 1 1 auto !important; /* Allow buttons to grow/shrink */
-        min-width: 100px !important; /* Minimum button width */
+        flex: 1 1 120px !important; /* Adjusted min-width for buttons */
         max-width: 150px !important; /* Cap button width */
+        display: block !important; /* Ensure buttons are visible */
     }
     /* Ensure container width adapts */
     .main .block-container {
@@ -238,32 +242,37 @@ else:
     render_slider()
     mostrar_logo()
 
+    # Control buttons (Flexbox Approach)
     with controls_placeholder:
-        # Dynamically adjust column count based on approximate screen width
-        num_buttons = 6
-        col_count = min(num_buttons, max(2, st.get_option("deprecation.showPyplotGlobalUse") or 4))  # Fallback to 4 columns
-        cols = st.columns(col_count)
-        buttons = [
-            ("⏪ Back", lambda: (
-                st.session_state.update({"second": max(0, st.session_state.second - 1), "playing": False}),
-                mostrar_contenido(), render_slider(), mostrar_logo()
-            )),
-            ("▶️ Play 1x", lambda: st.session_state.update({"playing": True, "speed": 1})),
-            ("⏩ Forward", lambda: (
-                st.session_state.update({"second": min(359, st.session_state.second + 1), "playing": False}),
-                mostrar_contenido(), render_slider(), mostrar_logo()
-            )),
-            ("⏸️ Pause", lambda: st.session_state.update({"playing": False})),
-            ("⏹️ Stop", lambda: (
-                st.session_state.update({"playing": False, "second": 0}),
-                mostrar_contenido(), render_slider(), mostrar_logo()
-            )),
-            ("⏩ Play 5x", lambda: st.session_state.update({"playing": True, "speed": 5}))
-        ]
-        for i, (label, action) in enumerate(buttons):
-            with cols[i % col_count]:
-                if st.button(label):
-                    action()
+        with st.container():
+            st.markdown('<div class="control-buttons-container">', unsafe_allow_html=True)
+            if st.button("⏪ Back"):
+                st.session_state.second = max(0, st.session_state.second - 1)
+                st.session_state.playing = False
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+            if st.button("▶️ Play 1x"):
+                st.session_state.playing = True
+                st.session_state.speed = 1
+            if st.button("⏩ Forward"):
+                st.session_state.second = min(359, st.session_state.second + 1)
+                st.session_state.playing = False
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+            if st.button("⏸️ Pause"):
+                st.session_state.playing = False
+            if st.button("⏹️ Stop"):
+                st.session_state.playing = False
+                st.session_state.second = 0
+                mostrar_contenido()
+                render_slider()
+                mostrar_logo()
+            if st.button("⏩ Play 5x"):
+                st.session_state.playing = True
+                st.session_state.speed = 5
+            st.markdown('</div>', unsafe_allow_html=True)
 
     # Playback loop
     if st.session_state.playing:
