@@ -77,26 +77,33 @@ st.markdown(
     .metric-value {
         font-size: calc(0.8rem + 0.8vw) !important; /* Smaller metric values */
     }
-    /* Force columns to stay horizontal and shrink */
-    .stColumns > div {
-        flex-shrink: 1 !important;
-        flex-grow: 0 !important;
-        min-width: 0 !important;
-        max-width: 25% !important; /* Cap column width for 4 columns */
-        padding: 0.2rem !important; /* Reduce padding */
-        margin: 0 !important; /* Remove margins */
-        box-sizing: border-box !important;
-    }
-    /* Ensure columns container stays horizontal */
-    .stColumns {
+    /* Custom flexbox for metrics to stay horizontal */
+    .metrics-container {
         display: flex !important;
         flex-wrap: nowrap !important; /* Prevent wrapping */
-        overflow-x: auto !important; /* Allow horizontal scroll if needed */
+        overflow-x: auto !important; /* Horizontal scrollbar */
+        width: 100% !important;
+        gap: 0.5rem !important; /* Space between metrics */
+    }
+    .metric-item {
+        flex: 1 0 20% !important; /* Each metric takes ~25% width, adjustable */
+        min-width: 80px !important; /* Minimum width to prevent collapse */
+        text-align: center !important;
+        padding: 0.2rem !important;
+        box-sizing: border-box !important;
     }
     /* Ensure container width adapts */
     .main .block-container {
         max-width: 100% !important;
         padding: 0.5rem !important; /* Tighter padding */
+    }
+    /* Optional: Style scrollbar for better visibility */
+    .metrics-container::-webkit-scrollbar {
+        height: 8px !important;
+    }
+    .metrics-container::-webkit-scrollbar-thumb {
+        background: #005EA8 !important;
+        border-radius: 4px !important;
     }
     </style>
     """,
@@ -158,43 +165,29 @@ else:
             """, unsafe_allow_html=True)
 
         with metrics_placeholder:
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                st.markdown(
-                    f"""
-                    <div style='text-align:center;'>
+            st.markdown(
+                f"""
+                <div class='metrics-container'>
+                    <div class='metric-item'>
                         <div class='metric-label' style='color:#888;'>Area %</div>
                         <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Area%']:.3f}</div>
                     </div>
-                    """, unsafe_allow_html=True
-                )
-            with col2:
-                st.markdown(
-                    f"""
-                    <div style='text-align:center;'>
+                    <div class='metric-item'>
                         <div class='metric-label' style='color:#888;'>Circularity</div>
                         <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Circularity']:.3f}</div>
                     </div>
-                    """, unsafe_allow_html=True
-                )
-            with col3:
-                st.markdown(
-                    f"""
-                    <div style='text-align:center;'>
+                    <div class='metric-item'>
                         <div class='metric-label' style='color:#888;'>Dehydration rate %/s</div>
                         <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Vdeshidratacion']:.2f}%</div>
                     </div>
-                    """, unsafe_allow_html=True
-                )
-            with col4:
-                st.markdown(
-                    f"""
-                    <div style='text-align:center;'>
+                    <div class='metric-item'>
                         <div class='metric-label' style='color:#888;'>Deplasmolysis rate %/s</div>
                         <div class='metric-value' style='font-weight:bold; color:#222'>{dato['Vdeplasmolisi']:.2f}%</div>
                     </div>
-                    """, unsafe_allow_html=True
-                )
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
 
         with grafico_placeholder:
             st.image("slider_background_final.png", use_container_width=True)
