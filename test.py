@@ -96,6 +96,18 @@ st.markdown(
         padding: 0.1rem !important; /* Reduced padding */
         box-sizing: border-box !important;
     }
+    /* Flexbox for control buttons */
+    .control-buttons {
+        display: flex !important;
+        flex-wrap: wrap !important; /* Allow wrapping */
+        gap: 0.5rem !important; /* Space between buttons */
+        justify-content: center !important; /* Center buttons */
+    }
+    .control-buttons .stButton > button {
+        flex: 1 1 auto !important; /* Allow buttons to grow/shrink */
+        min-width: 100px !important; /* Minimum button width */
+        max-width: 150px !important; /* Cap button width */
+    }
     /* Ensure container width adapts */
     .main .block-container {
         max-width: 100% !important;
@@ -186,7 +198,6 @@ else:
                         <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeshidratacion']:.2f}%/s</div>
                     </div>
                     <div class='metric-item'>
-                        <div class='metric-item'>
                         <div class='metric-label' style='color:#003087'>Deplasmolysis</div>
                         <div class='metric-value' style='font-weight: bold; color:#333'>{dato['Vdeplasmolisi']:.2f}%/s</div>
                     </div>
@@ -213,7 +224,7 @@ else:
                 """
                 <div style='text-align: center; margin-top: 1rem;'>
                     <a href='https://www.fertilab.com' target='_blank'>
-                        <img src='https://redinfertiles.com/wp-content/uploads/2022/04/logo-Barcelona.png' 
+                        <img src='https://redinfertiles.com/wp-content/uploadsAQ/2022/04/logo-Barcelona.png' 
                              alt='Fertilab Barcelona' width='200'/>
                     </a>
                 </div>
@@ -228,39 +239,34 @@ else:
 
     # Control buttons
     with controls_placeholder:
-        col1, col2, col3, col4, col5, col6 = st.columns(6)
-        with col1:
-            if st.button("⏪ Back"):
-                st.session_state.second = max(0, st.session_state.second - 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col2:
-            if st.button("▶️ Play 1x"):
-                st.session_state.playing = True
-                st.session_state.speed = 1
-        with col3:
-            if st.button("⏩ Forward"):
-                st.session_state.second = min(359, st.session_state.second + 1)
-                st.session_state.playing = False
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col4:
-            if st.button("⏸️ Pause"):
-                st.session_state.playing = False
-        with col5:
-            if st.button("⏹️ Stop"):
-                st.session_state.playing = False
-                st.session_state.second = 0
-                mostrar_contenido()
-                render_slider()
-                mostrar_logo()
-        with col6:
-            if st.button("⏩ Play 5x"):
-                st.session_state.playing = True
-                st.session_state.speed = 5
+        st.markdown("<div class='control-buttons'>", unsafe_allow_html=True)
+        if st.button("⏪ Back"):
+            st.session_state.second = max(0, st.session_state.second - 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        if st.button("▶️ Play 1x"):
+            st.session_state.playing = True
+            st.session_state.speed = 1
+        if st.button("⏩ Forward"):
+            st.session_state.second = min(359, st.session_state.second + 1)
+            st.session_state.playing = False
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        if st.button("⏸️ Pause"):
+            st.session_state.playing = False
+        if st.button("⏹️ Stop"):
+            st.session_state.playing = False
+            st.session_state.second = 0
+            mostrar_contenido()
+            render_slider()
+            mostrar_logo()
+        if st.button("⏩ Play 5x"):
+            st.session_state.playing = True
+            st.session_state.speed = 5
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # Playback loop
     if st.session_state.playing:
